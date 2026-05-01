@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RDKK KTSadar 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0a;--bg2:#111;--bg3:#1a1a1a;--bg4:#222;
+  --merah:#cc0000;--merah2:#ff2222;--merah3:#8b0000;--merah4:#2a0000;
+  --putih:#f0f0f0;--putih2:#aaa;--putih3:#555;
+  --hijau:#00cc44;--emas:#c9a84c;
+  --border:rgba(204,0,0,0.3);--border2:rgba(204,0,0,0.12);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--putih);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;}
+.page{display:none;}.page.active{display:block;}
+
+/* HEADER */
+.header{background:linear-gradient(180deg,#180000,#0c0000);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:40;}
+.header-top{display:flex;align-items:center;gap:12px;padding:10px 14px;}
+.logo-wrap{width:50px;height:50px;flex-shrink:0;background:radial-gradient(circle,#112211,#060e06);border-radius:50%;border:2px solid var(--emas);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 0 14px rgba(201,168,76,0.35);}
+.header-title{font-family:'Orbitron',monospace;font-size:14px;font-weight:900;color:var(--merah2);letter-spacing:2px;}
+.header-sub{font-size:9px;color:var(--putih2);letter-spacing:.8px;margin-top:2px;font-family:'Rajdhani',sans-serif;line-height:1.5;}
+.header-badge{font-family:'Rajdhani',sans-serif;font-size:8px;letter-spacing:1px;background:var(--merah4);border:1px solid var(--merah3);color:var(--merah2);padding:4px 8px;border-radius:4px;text-align:center;flex-shrink:0;}
+.header-bar{display:flex;justify-content:space-between;padding:5px 14px;background:rgba(0,0,0,0.5);border-top:1px solid var(--border2);font-family:'Rajdhani',sans-serif;font-size:9px;color:var(--putih3);letter-spacing:.8px;flex-wrap:wrap;gap:4px;}
+.dot-g{width:5px;height:5px;background:var(--hijau);border-radius:50%;display:inline-block;animation:blink 2s infinite;margin-right:3px;}
+.dot-r{width:5px;height:5px;background:var(--merah);border-radius:50%;display:inline-block;margin-right:3px;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* KUOTA CARDS */
+.kuota-sec{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 14px 0;}
+.kcard{border-radius:8px;padding:13px;border:1px solid;position:relative;overflow:hidden;}
+.kcard::after{content:'';position:absolute;top:-15px;right:-15px;width:70px;height:70px;border-radius:50%;opacity:.06;}
+.kc-urea{background:linear-gradient(145deg,#161616,#0e0e0e);border-color:rgba(200,200,200,0.15);}
+.kc-urea::after{background:#fff;}
+.kc-phoska{background:linear-gradient(145deg,#1c0000,#0f0000);border-color:var(--border);}
+.kc-phoska::after{background:var(--merah);}
+.kc-lbl{font-family:'Rajdhani',sans-serif;font-size:8px;letter-spacing:2px;color:var(--putih3);text-transform:uppercase;}
+.kc-nama{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;margin:2px 0 6px;}
+.kc-urea .kc-nama{color:#ddd;}.kc-phoska .kc-nama{color:var(--merah2);}
+.kc-num{font-family:'Orbitron',monospace;font-size:22px;font-weight:900;line-height:1;}
+.kc-urea .kc-num{color:#fff;}.kc-phoska .kc-num{color:var(--merah2);}
+.kc-sat{font-size:8px;color:var(--putih3);letter-spacing:1px;font-family:'Rajdhani',sans-serif;margin-top:1px;}
+.kc-bar-bg{height:3px;border-radius:2px;margin:8px 0 5px;background:rgba(255,255,255,0.06);}
+.kc-bar{height:100%;border-radius:2px;transition:width .7s;}
+.kc-urea .kc-bar{background:linear-gradient(90deg,#555,#bbb);}
+.kc-phoska .kc-bar{background:linear-gradient(90deg,var(--merah3),var(--merah2));}
+.kc-foot{display:flex;justify-content:space-between;font-size:8px;color:var(--putih3);font-family:'Rajdhani',sans-serif;}
+.kc-harga{margin-top:8px;display:inline-block;font-family:'Rajdhani',sans-serif;font-size:8px;letter-spacing:.5px;font-weight:600;padding:3px 7px;border-radius:3px;}
+.kc-urea .kc-harga{background:rgba(255,255,255,0.08);color:#bbb;border:1px solid rgba(255,255,255,0.08);}
+.kc-phoska .kc-harga{background:rgba(204,0,0,0.18);color:var(--merah2);border:1px solid var(--border);}
+
+/* SEARCH */
+.search-sec{padding:12px 14px 0;}
+.search-wrap{position:relative;margin-bottom:8px;}
+.search-inp{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:10px 38px 10px 13px;color:var(--putih);font-family:'Inter',sans-serif;font-size:14px;outline:none;transition:border-color .2s;}
+.search-inp::placeholder{color:var(--putih3);}
+.search-inp:focus{border-color:var(--merah);}
+.search-ico{position:absolute;right:11px;top:50%;transform:translateY(-50%);color:var(--putih3);font-size:16px;}
+.mt-tabs{display:flex;gap:6px;}
+.mt-tab{flex:1;padding:7px;border-radius:5px;border:1px solid var(--border2);background:var(--bg3);color:var(--putih3);font-family:'Rajdhani',sans-serif;font-size:10px;letter-spacing:2px;cursor:pointer;text-align:center;transition:all .2s;text-transform:uppercase;}
+.mt-tab.active{background:var(--merah);border-color:var(--merah2);color:#fff;font-weight:700;}
+
+/* SECTION HEAD */
+.sec-head{display:flex;align-items:center;gap:10px;padding:12px 14px 8px;}
+.sec-head h2{font-family:'Rajdhani',sans-serif;font-size:11px;letter-spacing:3px;color:var(--merah2);text-transform:uppercase;white-space:nowrap;}
+.sec-line{flex:1;height:1px;background:linear-gradient(90deg,var(--merah3),transparent);}
+.sec-badge{background:var(--merah);color:#fff;font-family:'Rajdhani',sans-serif;font-size:9px;padding:3px 9px;border-radius:3px;letter-spacing:1px;white-space:nowrap;}
+
+/* ANGGOTA */
+.anggota-list{padding:0 14px;display:flex;flex-direction:column;gap:5px;}
+.acard{background:var(--bg2);border:1px solid var(--border2);border-radius:7px;overflow:hidden;cursor:pointer;transition:border-color .2s;}
+.acard:hover,.acard.active{border-color:var(--merah);}
+.acard-head{display:flex;align-items:center;gap:10px;padding:10px 12px;}
+.ano{width:24px;height:24px;background:var(--merah4);border:1px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:8px;font-weight:700;color:var(--merah2);flex-shrink:0;}
+.ainfo{flex:1;min-width:0;}
+.anama{font-weight:600;font-size:13px;color:var(--putih);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.anik{font-size:9px;color:var(--putih3);letter-spacing:.5px;margin-top:1px;font-family:'Rajdhani',sans-serif;}
+.alahan{font-size:10px;color:var(--putih3);margin-top:1px;}
+.asisa{text-align:right;flex-shrink:0;}
+.asisa-lbl{font-size:7px;color:var(--putih3);letter-spacing:1px;font-family:'Rajdhani',sans-serif;}
+.asisa-num{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;display:flex;gap:4px;justify-content:flex-end;margin-top:1px;}
+.su{color:#bbb;}.sp{color:var(--merah2);}
+.sisa-habis{color:#333;font-size:9px;}
+
+/* DETAIL */
+.detail-panel{display:none;padding:11px;background:rgba(0,0,0,0.45);border-top:1px solid var(--border2);}
+.acard.active .detail-panel{display:block;}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px;}
+.dbox{border-radius:6px;padding:9px;border:1px solid;}
+.dbox-u{background:rgba(255,255,255,0.03);border-color:rgba(255,255,255,0.09);}
+.dbox-p{background:rgba(204,0,0,0.07);border-color:var(--border);}
+.dbox-title{font-family:'Rajdhani',sans-serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;}
+.dbox-u .dbox-title{color:#888;}.dbox-p .dbox-title{color:var(--merah2);}
+.drow{display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;}
+.drow .dl{color:var(--putih3);}.drow .dv{font-weight:600;font-size:11px;}
+.dbox-u .drow .dv{color:#ccc;}.dbox-p .drow .dv{color:var(--merah2);}
+.prog-bg{height:3px;border-radius:2px;margin-top:5px;background:rgba(255,255,255,0.05);}
+.prog-u{height:100%;border-radius:2px;background:linear-gradient(90deg,#444,#999);transition:width .5s;}
+.prog-p{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--merah3),var(--merah));transition:width .5s;}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:9px 0;}
+.trx-title{font-family:'Rajdhani',sans-serif;font-size:9px;letter-spacing:2px;color:var(--merah2);text-align:center;margin-bottom:9px;text-transform:uppercase;opacity:.75;}
+.trx-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.trx-group label{display:block;font-family:'Rajdhani',sans-serif;font-size:8px;letter-spacing:1px;color:var(--putih3);margin-bottom:3px;text-transform:uppercase;}
+.trx-inp{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:8px 6px;color:var(--putih);font-family:'Orbitron',monospace;font-size:15px;font-weight:700;text-align:center;outline:none;transition:border-color .2s;}
+.trx-inp:focus{border-color:var(--merah2);}
+.harga-est{text-align:center;font-size:10px;color:var(--emas);margin-top:5px;font-family:'Rajdhani',sans-serif;letter-spacing:.5px;min-height:15px;}
+.btn-trx{width:100%;padding:9px;border-radius:5px;border:none;font-family:'Rajdhani',sans-serif;font-size:9px;letter-spacing:2px;font-weight:700;cursor:pointer;transition:all .2s;text-transform:uppercase;margin-top:4px;}
+.btn-u{background:rgba(255,255,255,0.08);color:#ccc;border:1px solid rgba(255,255,255,0.12);}
+.btn-p{background:var(--merah4);color:var(--merah2);border:1px solid var(--border);}
+.btn-both{background:linear-gradient(135deg,#1a0000,#0a0000);color:var(--emas);border:1px solid rgba(201,168,76,0.3);}
+
+/* STRUK */
+.struk-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);backdrop-filter:blur(6px);z-index:150;align-items:center;justify-content:center;padding:18px;}
+.struk-overlay.show{display:flex;}
+.struk-box{background:#111;border:1px solid var(--merah3);border-radius:10px;width:100%;max-width:340px;overflow:hidden;box-shadow:0 0 40px rgba(204,0,0,0.25);animation:popIn .3s cubic-bezier(.34,1.56,.64,1);}
+@keyframes popIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.struk-hd{background:linear-gradient(135deg,#1c0000,#0a0000);padding:13px 16px;border-bottom:1px solid var(--border);text-align:center;}
+.struk-hd-title{font-family:'Rajdhani',sans-serif;font-size:8px;letter-spacing:3px;color:var(--merah2);text-transform:uppercase;}
+.struk-hd-nama{font-family:'Orbitron',monospace;font-size:16px;font-weight:700;color:#fff;margin-top:3px;}
+.struk-hd-sub{font-size:9px;color:var(--putih3);margin-top:2px;font-family:'Rajdhani',sans-serif;}
+.struk-body{padding:13px 15px;}
+.srow{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px;}
+.srow:last-child{border:none;}
+.srow .sl{color:var(--putih3);font-size:11px;}.srow .sv{font-weight:600;color:var(--putih);}
+.srow.total{padding-top:9px;border-top:1px solid var(--merah3);border-bottom:none;margin-top:3px;}
+.srow.total .sl{font-family:'Rajdhani',sans-serif;font-size:9px;letter-spacing:2px;color:var(--merah2);text-transform:uppercase;}
+.srow.total .sv{font-family:'Orbitron',monospace;font-size:19px;font-weight:900;color:var(--merah2);}
+.struk-ft{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:11px 15px;background:rgba(0,0,0,0.3);border-top:1px solid var(--border2);}
+.btn-batal{padding:10px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--putih3);font-family:'Rajdhani',sans-serif;font-size:9px;letter-spacing:1px;cursor:pointer;font-weight:700;}
+.btn-konfirmasi{padding:10px;border-radius:5px;border:none;background:var(--merah);color:#fff;font-family:'Rajdhani',sans-serif;font-size:9px;letter-spacing:1px;cursor:pointer;font-weight:700;box-shadow:0 3px 12px rgba(204,0,0,0.4);}
+
+/* KAS */
+.kas-page{padding:13px;}
+.kas-sum{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:13px;}
+.ksc{border-radius:8px;padding:13px;border:1px solid var(--border2);}
+.ksc.tot{grid-column:1/-1;background:linear-gradient(135deg,#001800,#000e00);border-color:rgba(0,204,68,.2);}
+.ksc.ku{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.09);}
+.ksc.kp{background:rgba(204,0,0,0.07);border-color:var(--border);}
+.ks-lbl{font-family:'Rajdhani',sans-serif;font-size:8px;letter-spacing:2px;color:var(--putih3);text-transform:uppercase;margin-bottom:3px;}
+.ks-num{font-family:'Orbitron',monospace;font-weight:900;line-height:1.1;}
+.tot .ks-num{font-size:21px;color:var(--hijau);}
+.ku .ks-num{font-size:13px;color:#ccc;}.kp .ks-num{font-size:13px;color:var(--merah2);}
+.ks-sub{font-size:9px;color:var(--putih3);margin-top:2px;font-family:'Rajdhani',sans-serif;}
+.trx-list{display:flex;flex-direction:column;gap:5px;}
+.trx-item{background:var(--bg2);border:1px solid var(--border2);border-radius:7px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;gap:8px;}
+.ti-nama{font-weight:600;font-size:12px;color:var(--putih);}
+.ti-det{font-size:10px;color:var(--putih3);margin-top:1px;}
+.ti-time{font-size:8px;color:var(--putih3);font-family:'Rajdhani',sans-serif;letter-spacing:.5px;margin-top:1px;}
+.ti-rp{font-family:'Orbitron',monospace;font-size:12px;font-weight:700;color:var(--hijau);white-space:nowrap;}
+.ti-jenis{font-family:'Rajdhani',sans-serif;font-size:8px;color:var(--putih3);text-align:right;letter-spacing:.5px;}
+.btn-hapus{width:100%;padding:10px;background:rgba(204,0,0,0.09);border:1px solid var(--border);border-radius:5px;color:rgba(255,80,80,.8);font-family:'Rajdhani',sans-serif;font-size:9px;letter-spacing:2px;cursor:pointer;margin-top:13px;text-transform:uppercase;}
+
+/* MODAL */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(4px);z-index:100;align-items:flex-end;justify-content:center;}
+.modal-ov.show{display:flex;}
+.modal-sheet{background:var(--bg2);border:1px solid var(--border);border-radius:12px 12px 0 0;width:100%;max-width:600px;max-height:70vh;overflow-y:auto;padding:16px 13px 26px;animation:slideUp .3s ease;}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:34px;height:3px;background:var(--putih3);border-radius:2px;margin:0 auto 12px;}
+.modal-title{font-family:'Rajdhani',sans-serif;font-size:11px;letter-spacing:3px;color:var(--merah2);text-align:center;margin-bottom:12px;text-transform:uppercase;}
+.rw-item{display:flex;justify-content:space-between;align-items:center;padding:8px 11px;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;margin-bottom:5px;}
+.rw-nama{font-weight:600;font-size:12px;color:var(--putih);}
+.rw-det{font-size:10px;color:var(--putih3);margin-top:1px;}
+.rw-time{font-size:8px;color:var(--putih3);font-family:'Rajdhani',sans-serif;}
+.rw-u{color:#bbb;font-family:'Rajdhani',sans-serif;font-size:9px;letter-spacing:1px;text-align:right;}
+.rw-p{color:var(--merah2);font-family:'Rajdhani',sans-serif;font-size:9px;letter-spacing:1px;text-align:right;}
+.btn-close-modal{width:100%;padding:10px;background:var(--merah);border:none;border-radius:5px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:9px;letter-spacing:2px;cursor:pointer;margin-top:11px;text-transform:uppercase;}
+
+/* BOTTOM NAV */
+.bottom-nav{position:sticky;bottom:0;background:linear-gradient(0,#0c0000 70%,rgba(12,0,0,.95));border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:7px 0 13px;z-index:50;}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;color:var(--putih3);transition:color .2s;padding:3px 10px;}
+.nav-btn.active{color:var(--merah2);}
+.nav-btn svg{width:19px;height:19px;}
+.nav-btn span{font-family:'Rajdhani',sans-serif;font-size:8px;letter-spacing:1px;text-transform:uppercase;}
+
+/* TOAST */
+.toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%) translateY(14px);background:#1a0000;border:1px solid var(--merah);border-radius:5px;padding:9px 16px;font-size:11px;color:var(--putih);z-index:200;opacity:0;transition:all .3s;white-space:nowrap;pointer-events:none;max-width:92vw;text-align:center;font-family:'Rajdhani',sans-serif;letter-spacing:.5px;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.empty-state{text-align:center;padding:28px 18px;color:var(--putih3);font-size:12px;font-family:'Rajdhani',sans-serif;letter-spacing:1px;}
+.pb{padding-bottom:80px;}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ PAGE BERANDA ═══════════ -->
+<div id="page-beranda" class="page active">
+<header class="header">
+  <div class="header-top">
+    <div class="logo-wrap">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="47" fill="none" stroke="#c9a84c" stroke-width="1.5"/>
+        <line x1="30" y1="62" x2="25" y2="30" stroke="#c9a84c" stroke-width="1.2"/>
+        <ellipse cx="28" cy="56" rx="3.5" ry="5" transform="rotate(-15 28 56)" fill="#c9a84c" opacity=".9"/>
+        <ellipse cx="27" cy="48" rx="3" ry="4.5" transform="rotate(-20 27 48)" fill="#c9a84c" opacity=".85"/>
+        <ellipse cx="26" cy="40" rx="2.5" ry="4" transform="rotate(-25 26 40)" fill="#c9a84c" opacity=".8"/>
+        <ellipse cx="25" cy="33" rx="2" ry="3.5" transform="rotate(-30 25 33)" fill="#c9a84c" opacity=".7"/>
+        <line x1="70" y1="62" x2="75" y2="30" stroke="#c9a84c" stroke-width="1.2"/>
+        <ellipse cx="72" cy="56" rx="3.5" ry="5" transform="rotate(15 72 56)" fill="#c9a84c" opacity=".9"/>
+        <ellipse cx="73" cy="48" rx="3" ry="4.5" transform="rotate(20 73 48)" fill="#c9a84c" opacity=".85"/>
+        <ellipse cx="74" cy="40" rx="2.5" ry="4" transform="rotate(25 74 40)" fill="#c9a84c" opacity=".8"/>
+        <ellipse cx="75" cy="33" rx="2" ry="3.5" transform="rotate(30 75 33)" fill="#c9a84c" opacity=".7"/>
+        <circle cx="50" cy="46" r="16" fill="none" stroke="#c9a84c" stroke-width="1" opacity=".5"/>
+        <text x="50" y="43" text-anchor="middle" font-size="7" fill="#c9a84c" font-family="sans-serif" letter-spacing="1.5" font-weight="600">KELOMPOK TANI</text>
+        <text x="50" y="55" text-anchor="middle" font-size="14" font-weight="bold" fill="#c9a84c" font-family="Georgia,serif">SADAR</text>
+        <text x="50" y="68" text-anchor="middle" font-size="6" fill="#c9a84c" opacity=".6" letter-spacing="2">✦ ✦ ✦</text>
+      </svg>
+    </div>
+    <div class="header-info" style="flex:1">
+      <div class="header-title">KT · SADAR</div>
+      <div class="header-sub">RDKK PUPUK BERSUBSIDI · TAHUN 2026<br>Desa Gunungguruh · Kab. Sukabumi</div>
+    </div>
+    <div class="header-badge">RT000001259<br>TANI MURNI<br>SK 141.1/18</div>
+  </div>
+  <div class="header-bar">
+    <span><span class="dot-g"></span>SISTEM AKTIF</span>
+    <span>86 ANGGOTA</span>
+    <span>7,5 HEKTAR</span>
+  </div>
+</header>
+
+<div class="kuota-sec">
+  <div class="kcard kc-urea">
+    <div class="kc-lbl">Pupuk</div>
+    <div class="kc-nama">UREA</div>
+    <div class="kc-num" id="sisa-urea-display">—</div>
+    <div class="kc-sat">kg tersisa</div>
+    <div class="kc-bar-bg"><div class="kc-bar" id="bar-urea" style="width:100%"></div></div>
+    <div class="kc-foot"><span id="terpakai-urea">Terpakai: 0 kg</span><span id="total-urea-display">—</span></div>
+    <div class="kc-harga">Rp 92.000 / karung 50 kg</div>
+  </div>
+  <div class="kcard kc-phoska">
+    <div class="kc-lbl">Pupuk</div>
+    <div class="kc-nama">NPK PHONSKA</div>
+    <div class="kc-num" id="sisa-phoska-display">—</div>
+    <div class="kc-sat">kg tersisa</div>
+    <div class="kc-bar-bg"><div class="kc-bar" id="bar-phoska" style="width:100%"></div></div>
+    <div class="kc-foot"><span id="terpakai-phoska">Terpakai: 0 kg</span><span id="total-phoska-display">—</span></div>
+    <div class="kc-harga">Rp 95.000 / karung 50 kg</div>
+  </div>
+</div>
+
+<div class="search-sec">
+  <div class="search-wrap">
+    <input class="search-inp" id="searchInput" type="text" placeholder="Cari nama anggota..." oninput="filterAnggota()">
+    <span class="search-ico">⌕</span>
+  </div>
+  <div class="mt-tabs">
+    <div class="mt-tab active" onclick="setMusim('MT1')">MT I</div>
+    <div class="mt-tab" onclick="setMusim('MT2')">MT II</div>
+    <div class="mt-tab" onclick="setMusim('MT3')">MT III</div>
+  </div>
+</div>
+
+<div class="sec-head">
+  <h2>Daftar Anggota</h2>
+  <div class="sec-line"></div>
+  <div class="sec-badge" id="count-badge">86 ORANG</div>
+</div>
+<div class="anggota-list pb" id="anggotaList"></div>
+</div>
+
+<!-- ═══════════ PAGE KAS ═══════════ -->
+<div id="page-kas" class="page">
+<header class="header">
+  <div class="header-top">
+    <div class="logo-wrap">
+      <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="47" fill="none" stroke="#c9a84c" stroke-width="1.5"/><text x="50" y="55" text-anchor="middle" font-size="14" font-weight="bold" fill="#c9a84c" font-family="Georgia,serif">SADAR</text><text x="50" y="43" text-anchor="middle" font-size="7" fill="#c9a84c" font-family="sans-serif" letter-spacing="1.5">KELOMPOK TANI</text></svg>
+    </div>
+    <div style="flex:1">
+      <div class="header-title">KAS · PENJUALAN</div>
+      <div class="header-sub">Rekap Transaksi Pupuk Bersubsidi 2026</div>
+    </div>
+  </div>
+  <div class="header-bar">
+    <span><span class="dot-r"></span>KASIR AKTIF</span>
+    <span id="kas-trx-head">0 TRANSAKSI</span>
+  </div>
+</header>
+<div class="kas-page pb">
+  <div class="kas-sum">
+    <div class="ksc tot">
+      <div class="ks-lbl">💰 Total Pemasukan</div>
+      <div class="ks-num" id="kas-total">Rp 0</div>
+      <div class="ks-sub" id="kas-trx-count">0 transaksi</div>
+    </div>
+    <div class="ksc ku">
+      <div class="ks-lbl">⬜ Urea</div>
+      <div class="ks-num" id="kas-urea">Rp 0</div>
+      <div class="ks-sub" id="kas-urea-kg">0 kg terjual</div>
+    </div>
+    <div class="ksc kp">
+      <div class="ks-lbl">🟥 Phonska</div>
+      <div class="ks-num" id="kas-phoska">Rp 0</div>
+      <div class="ks-sub" id="kas-phoska-kg">0 kg terjual</div>
+    </div>
+  </div>
+  <div class="sec-head" style="padding:0 0 8px">
+    <h2>Riwayat Transaksi</h2><div class="sec-line"></div>
+  </div>
+  <div class="trx-list" id="transaksiList"><div class="empty-state">BELUM ADA TRANSAKSI</div></div>
+  <button class="btn-hapus" onclick="hapusKas()">🗑 HAPUS SEMUA TRANSAKSI</button>
+</div>
+</div>
+
+<!-- ═══════════ STRUK ═══════════ -->
+<div class="struk-overlay" id="strukOverlay">
+  <div class="struk-box">
+    <div class="struk-hd">
+      <div class="struk-hd-title">✦ Konfirmasi Transaksi ✦</div>
+      <div class="struk-hd-nama" id="struk-nama">—</div>
+      <div class="struk-hd-sub" id="struk-musim">—</div>
+    </div>
+    <div class="struk-body">
+      <div id="sd-urea" style="display:none">
+        <div class="srow"><span class="sl">Pupuk Urea</span><span class="sv" id="s-kg-u">—</span></div>
+        <div class="srow"><span class="sl">Harga/karung 50kg</span><span class="sv">Rp 92.000</span></div>
+        <div class="srow"><span class="sl">Subtotal Urea</span><span class="sv" id="s-sub-u">—</span></div>
+      </div>
+      <div id="sd-phoska" style="display:none">
+        <div class="srow"><span class="sl" style="color:#333">──────────</span><span></span></div>
+        <div class="srow"><span class="sl">NPK Phonska</span><span class="sv" id="s-kg-p">—</span></div>
+        <div class="srow"><span class="sl">Harga/karung 50kg</span><span class="sv">Rp 95.000</span></div>
+        <div class="srow"><span class="sl">Subtotal Phonska</span><span class="sv" id="s-sub-p">—</span></div>
+      </div>
+      <div class="srow total"><span class="sl">TOTAL BAYAR</span><span class="sv" id="s-total">Rp 0</span></div>
+    </div>
+    <div class="struk-ft">
+      <button class="btn-batal" onclick="batalStruk()">✕ BATAL</button>
+      <button class="btn-konfirmasi" onclick="konfirmasi()">✓ KONFIRMASI</button>
+    </div>
+  </div>
+</div>
+
+<!-- RIWAYAT MODAL -->
+<div class="modal-ov" id="modalRiwayat" onclick="closeModalOut(event)">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Riwayat Pengambilan</div>
+    <div id="riwayatList"><div class="empty-state">BELUM ADA RIWAYAT</div></div>
+    <button class="btn-close-modal" onclick="closeModal()">TUTUP</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-btn active" id="nav-beranda" onclick="showPage('beranda')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    <span>Beranda</span>
+  </button>
+  <button class="nav-btn" id="nav-kas" onclick="showPage('kas')">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+    <span>Kasir</span>
+  </button>
+  <button class="nav-btn" id="nav-riwayat" onclick="openModal()">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+    <span>Riwayat</span>
+  </button>
+  <button class="nav-btn" id="nav-reset" onclick="resetAll()">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+    <span>Reset</span>
+  </button>
+</div>
+
+<script>
+// ════════ DATA RDKK 86 ANGGOTA ════════
+const DATA_RDKK=[
+{no:1,nik:'3202270107880100',nama:'AANG',lahan:2.400,urea:{mt1:220,mt2:220,mt3:220},npk:{mt1:200,mt2:200,mt3:200}},
+{no:2,nik:'3202272308530001',nama:'ADANG',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:3,nik:'3202270107440024',nama:'ADE ANWARI',lahan:0.800,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:62,mt2:62,mt3:62}},
+{no:4,nik:'3202270105160005',nama:'ADE JAPAR',lahan:0.750,urea:{mt1:68,mt2:68,mt3:68},npk:{mt1:62,mt2:62,mt3:62}},
+{no:5,nik:'3202271605800004',nama:'ADE RAHMAT',lahan:2.400,urea:{mt1:220,mt2:220,mt3:220},npk:{mt1:200,mt2:200,mt3:200}},
+{no:6,nik:'3202271815100001',nama:'AEP',lahan:0.750,urea:{mt1:68,mt2:68,mt3:68},npk:{mt1:62,mt2:62,mt3:62}},
+{no:7,nik:'3202271206380005',nama:'AGUS',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:8,nik:'3202270107620089',nama:'ALI',lahan:1.800,urea:{mt1:165,mt2:165,mt3:165},npk:{mt1:150,mt2:150,mt3:150}},
+{no:9,nik:'3202270107620089',nama:'ANUN',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:10,nik:'3202270107540027',nama:'ANWAR',lahan:1.200,urea:{mt1:110,mt2:110,mt3:110},npk:{mt1:100,mt2:100,mt3:100}},
+{no:11,nik:'3202270107730003',nama:'APUD SARIPUDIN',lahan:1.500,urea:{mt1:137,mt2:137,mt3:137},npk:{mt1:125,mt2:125,mt3:125}},
+{no:12,nik:'3202270108830002',nama:'ASIM SUMARNA',lahan:0.510,urea:{mt1:46,mt2:46,mt3:46},npk:{mt1:42,mt2:42,mt3:42}},
+{no:13,nik:'3202273004640002',nama:'ATENG SULAEMAN',lahan:0.300,urea:{mt1:27,mt2:27,mt3:27},npk:{mt1:25,mt2:25,mt3:25}},
+{no:14,nik:'3202270107570046',nama:'BIBIN',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:15,nik:'3202274206500001',nama:'CICIH',lahan:1.440,urea:{mt1:132,mt2:132,mt3:132},npk:{mt1:120,mt2:120,mt3:120}},
+{no:16,nik:'3202270107580091',nama:'CUCUP',lahan:0.660,urea:{mt1:60,mt2:60,mt3:60},npk:{mt1:55,mt2:55,mt3:55}},
+{no:17,nik:'3202271206380005',nama:'DADAN',lahan:1.500,urea:{mt1:137,mt2:137,mt3:137},npk:{mt1:125,mt2:125,mt3:125}},
+{no:18,nik:'3202271208830002',nama:'DASEP AHMAD SAEPULOH',lahan:0.900,urea:{mt1:82,mt2:82,mt3:82},npk:{mt1:75,mt2:75,mt3:75}},
+{no:19,nik:'3202270407800003',nama:'DUCE',lahan:0.750,urea:{mt1:68,mt2:68,mt3:68},npk:{mt1:62,mt2:62,mt3:62}},
+{no:20,nik:'3202270107510036',nama:'DULOH',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:21,nik:'3202270107680099',nama:'DULOH',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:22,nik:'3202270107640068',nama:'ECE',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:23,nik:'3202270107440083',nama:'ECE',lahan:1.500,urea:{mt1:137,mt2:137,mt3:137},npk:{mt1:125,mt2:125,mt3:125}},
+{no:24,nik:'3202270107265001',nama:'EMAN',lahan:1.800,urea:{mt1:165,mt2:165,mt3:165},npk:{mt1:150,mt2:150,mt3:150}},
+{no:25,nik:'3202270756550002',nama:'EMAN SULAEMAN',lahan:0.900,urea:{mt1:82,mt2:82,mt3:82},npk:{mt1:75,mt2:75,mt3:75}},
+{no:26,nik:'3202270655550001',nama:'EMAN SULAEMAN',lahan:0.900,urea:{mt1:82,mt2:82,mt3:82},npk:{mt1:75,mt2:75,mt3:75}},
+{no:27,nik:'3202270655000001',nama:'EMPUD',lahan:3.000,urea:{mt1:275,mt2:275,mt3:275},npk:{mt1:250,mt2:250,mt3:250}},
+{no:28,nik:'3202271206870001',nama:'ENDED',lahan:0.800,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:65,mt2:65,mt3:65}},
+{no:29,nik:'3202274803730002',nama:'ENENG NURHASANAH',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:30,nik:'3202270206730004',nama:'ERIK ANDRIANA',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:31,nik:'3202274107840068',nama:'EROS',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:32,nik:'3202274119150002',nama:'HARISNA SLIANDA',lahan:1.500,urea:{mt1:137,mt2:137,mt3:137},npk:{mt1:125,mt2:125,mt3:125}},
+{no:33,nik:'3202274908770007',nama:'HINDARSAH',lahan:1.500,urea:{mt1:137,mt2:137,mt3:137},npk:{mt1:125,mt2:125,mt3:125}},
+{no:34,nik:'3202270107630002',nama:'H MIMIN',lahan:0.540,urea:{mt1:49,mt2:49,mt3:49},npk:{mt1:45,mt2:45,mt3:45}},
+{no:35,nik:'3202270107550021',nama:'H PUDIN',lahan:1.800,urea:{mt1:165,mt2:165,mt3:165},npk:{mt1:150,mt2:150,mt3:150}},
+{no:36,nik:'3202270860300008',nama:'HUDRI',lahan:3.000,urea:{mt1:275,mt2:275,mt3:275},npk:{mt1:250,mt2:250,mt3:250}},
+{no:37,nik:'3202270758730002',nama:'IN',lahan:1.800,urea:{mt1:165,mt2:165,mt3:165},npk:{mt1:150,mt2:150,mt3:150}},
+{no:38,nik:'3202275107480028',nama:'IJUN',lahan:1.200,urea:{mt1:110,mt2:110,mt3:110},npk:{mt1:100,mt2:100,mt3:100}},
+{no:39,nik:'3202272182180003',nama:'IRA SRI RAHMANWATI',lahan:3.000,urea:{mt1:275,mt2:275,mt3:275},npk:{mt1:250,mt2:250,mt3:250}},
+{no:40,nik:'3202276600720001',nama:'IWIN',lahan:0.240,urea:{mt1:22,mt2:22,mt3:22},npk:{mt1:20,mt2:20,mt3:20}},
+{no:41,nik:'3202270412820001',nama:'JAELANI',lahan:0.300,urea:{mt1:27,mt2:27,mt3:27},npk:{mt1:25,mt2:25,mt3:25}},
+{no:42,nik:'3202270107530002',nama:'JEJEN',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:43,nik:'3202271312960002',nama:'JEJEN',lahan:2.250,urea:{mt1:206,mt2:206,mt3:206},npk:{mt1:187,mt2:187,mt3:187}},
+{no:44,nik:'3202221174000001',nama:'KAMAL',lahan:1.800,urea:{mt1:165,mt2:165,mt3:165},npk:{mt1:150,mt2:150,mt3:150}},
+{no:45,nik:'3202270105300001',nama:'KURNEN',lahan:0.960,urea:{mt1:88,mt2:88,mt3:88},npk:{mt1:80,mt2:80,mt3:80}},
+{no:46,nik:'3202270107490024',nama:'MAMUN',lahan:0.750,urea:{mt1:68,mt2:68,mt3:68},npk:{mt1:62,mt2:62,mt3:62}},
+{no:47,nik:'3202270107490002',nama:'MANSUR',lahan:1.200,urea:{mt1:110,mt2:110,mt3:110},npk:{mt1:100,mt2:100,mt3:100}},
+{no:48,nik:'3202270107610045',nama:'M DADUN',lahan:1.200,urea:{mt1:110,mt2:110,mt3:110},npk:{mt1:100,mt2:100,mt3:100}},
+{no:49,nik:'3202270107560082',nama:'M JELEN',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:50,nik:'3202270107770041',nama:'M ODANG SARIPUDIN',lahan:1.050,urea:{mt1:96,mt2:96,mt3:96},npk:{mt1:87,mt2:87,mt3:87}},
+{no:51,nik:'3202270107670022',nama:'M SUKARMA',lahan:1.650,urea:{mt1:151,mt2:151,mt3:151},npk:{mt1:137,mt2:137,mt3:137}},
+{no:52,nik:'3202270009890010',nama:'MUHAMAD NANDANG JAELANI',lahan:0.900,urea:{mt1:82,mt2:82,mt3:82},npk:{mt1:75,mt2:75,mt3:75}},
+{no:53,nik:'3202270508700011',nama:'MUMUH MUKHTAR',lahan:6.000,urea:{mt1:550,mt2:550,mt3:550},npk:{mt1:500,mt2:500,mt3:500}},
+{no:54,nik:'3202270107730078',nama:'MUSLIH',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:55,nik:'3202274107690061',nama:'NEMIH',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:56,nik:'3202270107850108',nama:'OBIN',lahan:0.900,urea:{mt1:82,mt2:82,mt3:82},npk:{mt1:75,mt2:75,mt3:75}},
+{no:57,nik:'3202270107490001',nama:'PAHRUDIN',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:58,nik:'3202276203610001',nama:'POPON SOPIAH',lahan:0.900,urea:{mt1:82,mt2:82,mt3:82},npk:{mt1:75,mt2:75,mt3:75}},
+{no:59,nik:'3202271117320001',nama:'PULLI',lahan:0.750,urea:{mt1:68,mt2:68,mt3:68},npk:{mt1:62,mt2:62,mt3:62}},
+{no:60,nik:'3272061100650001',nama:'RAHMAT BIN KOMAR',lahan:0.900,urea:{mt1:82,mt2:82,mt3:82},npk:{mt1:75,mt2:75,mt3:75}},
+{no:61,nik:'3203161109620002',nama:'RIJAL',lahan:0.400,urea:{mt1:71,mt2:71,mt3:71},npk:{mt1:65,mt2:65,mt3:65}},
+{no:62,nik:'3202270107880127',nama:'SAHRUDIN',lahan:0.780,urea:{mt1:71,mt2:71,mt3:71},npk:{mt1:65,mt2:65,mt3:65}},
+{no:63,nik:'3202270107840046',nama:'SHOLICHUN',lahan:0.300,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:64,nik:'3202271407630001',nama:'SITI MAS ROHILAH',lahan:0.900,urea:{mt1:82,mt2:82,mt3:82},npk:{mt1:75,mt2:75,mt3:75}},
+{no:65,nik:'3202271711580002',nama:'SOMADI',lahan:0.900,urea:{mt1:82,mt2:82,mt3:82},npk:{mt1:75,mt2:75,mt3:75}},
+{no:66,nik:'3202270206530008',nama:'SUARDI',lahan:0.900,urea:{mt1:82,mt2:82,mt3:82},npk:{mt1:75,mt2:75,mt3:75}},
+{no:67,nik:'3202272001750001',nama:'SUPARTA',lahan:1.800,urea:{mt1:165,mt2:165,mt3:165},npk:{mt1:150,mt2:150,mt3:150}},
+{no:68,nik:'3202274309570001',nama:'SUPARTA',lahan:1.500,urea:{mt1:137,mt2:137,mt3:137},npk:{mt1:125,mt2:125,mt3:125}},
+{no:69,nik:'3202272904900002',nama:'SUPENDI',lahan:0.750,urea:{mt1:68,mt2:68,mt3:68},npk:{mt1:62,mt2:62,mt3:62}},
+{no:70,nik:'3202274309567001',nama:'SURYANI',lahan:1.500,urea:{mt1:137,mt2:137,mt3:137},npk:{mt1:125,mt2:125,mt3:125}},
+{no:71,nik:'3202270507857005',nama:'TARODIN',lahan:0.900,urea:{mt1:82,mt2:82,mt3:82},npk:{mt1:75,mt2:75,mt3:75}},
+{no:72,nik:'3202274106610001',nama:'TATI',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:73,nik:'3202274380751001',nama:'TIHI ROSTINI',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:74,nik:'3202274309567001',nama:'TJAMPAN SAYANG',lahan:1.500,urea:{mt1:137,mt2:137,mt3:137},npk:{mt1:125,mt2:125,mt3:125}},
+{no:75,nik:'3202270107720059',nama:'UDIN',lahan:1.500,urea:{mt1:137,mt2:137,mt3:137},npk:{mt1:125,mt2:125,mt3:125}},
+{no:76,nik:'3202270107720050',nama:'UDIN SAMSUDIN',lahan:0.300,urea:{mt1:27,mt2:27,mt3:27},npk:{mt1:25,mt2:25,mt3:25}},
+{no:77,nik:'3202270101750018',nama:'USEP',lahan:0.690,urea:{mt1:63,mt2:63,mt3:63},npk:{mt1:57,mt2:57,mt3:57}},
+{no:78,nik:'3202270207501048',nama:'USEP SAEPUL MALIK',lahan:0.690,urea:{mt1:63,mt2:63,mt3:63},npk:{mt1:57,mt2:57,mt3:57}},
+{no:79,nik:'3202270208710002',nama:'USUP',lahan:1.200,urea:{mt1:110,mt2:110,mt3:110},npk:{mt1:100,mt2:100,mt3:100}},
+{no:80,nik:'3202270107720059',nama:'UTANG',lahan:2.400,urea:{mt1:220,mt2:220,mt3:220},npk:{mt1:200,mt2:200,mt3:200}},
+{no:81,nik:'3202270107700073',nama:'UUS SUHERMAN',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:82,nik:'3202270101700073',nama:'YADI',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:83,nik:'3202270107750073',nama:'YADI',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:84,nik:'3202270107820062',nama:'YAYAN',lahan:0.600,urea:{mt1:55,mt2:55,mt3:55},npk:{mt1:50,mt2:50,mt3:50}},
+{no:85,nik:'3202270984750004',nama:'YAYIT MULI YADI SANJAYA',lahan:0.750,urea:{mt1:68,mt2:68,mt3:68},npk:{mt1:62,mt2:62,mt3:62}},
+{no:86,nik:'3272051402840902',nama:'YOSEP PRAJAKA GUNAWAN',lahan:0.750,urea:{mt1:68,mt2:68,mt3:68},npk:{mt1:62,mt2:62,mt3:62}},
+];
+
+const HU=92000,HP=95000;
+let MT='MT1';
+let riwayat  =JSON.parse(localStorage.getItem('rw_kts')||'[]');
+let transaksi=JSON.parse(localStorage.getItem('trx_kts')||'[]');
+let pending  =null;
+let SK=JSON.parse(localStorage.getItem('sk_kts')||'null');
+if(!SK){initSK();saveSK();}
+function initSK(){SK={};DATA_RDKK.forEach(a=>{SK[a.no]={u:{MT1:a.urea.mt1,MT2:a.urea.mt2,MT3:a.urea.mt3},p:{MT1:a.npk.mt1,MT2:a.npk.mt2,MT3:a.npk.mt3}};});}
+function saveSK(){localStorage.setItem('sk_kts',JSON.stringify(SK));}
+
+function showPage(pg){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+pg).classList.add('active');
+  document.getElementById('nav-'+pg).classList.add('active');
+  if(pg==='kas')renderKas();
+}
+
+function mf(){return MT==='MT1'?'mt1':MT==='MT2'?'mt2':'mt3';}
+
+function updateHeader(){
+  let tU=0,sU=0,tP=0,sP=0;const f=mf();
+  DATA_RDKK.forEach(a=>{tU+=a.urea[f];sU+=SK[a.no].u[MT];tP+=a.npk[f];sP+=SK[a.no].p[MT];});
+  document.getElementById('sisa-urea-display').textContent=sU.toLocaleString('id');
+  document.getElementById('total-urea-display').textContent='Total: '+tU.toLocaleString('id')+' kg';
+  document.getElementById('terpakai-urea').textContent='Terpakai: '+(tU-sU).toLocaleString('id')+' kg';
+  document.getElementById('bar-urea').style.width=(tU>0?sU/tU*100:0).toFixed(1)+'%';
+  document.getElementById('sisa-phoska-display').textContent=sP.toLocaleString('id');
+  document.getElementById('total-phoska-display').textContent='Total: '+tP.toLocaleString('id')+' kg';
+  document.getElementById('terpakai-phoska').textContent='Terpakai: '+(tP-sP).toLocaleString('id')+' kg';
+  document.getElementById('bar-phoska').style.width=(tP>0?sP/tP*100:0).toFixed(1)+'%';
+}
+
+function setMusim(mt){
+  MT=mt;
+  document.querySelectorAll('.mt-tab').forEach((t,i)=>t.classList.toggle('active',['MT1','MT2','MT3'][i]===mt));
+  renderList();updateHeader();
+}
+function filterAnggota(){renderList();}
+
+function renderList(){
+  const q=document.getElementById('searchInput').value.toLowerCase().trim();
+  const L=document.getElementById('anggotaList');L.innerHTML='';
+  const fl=DATA_RDKK.filter(a=>a.nama.toLowerCase().includes(q)||a.nik.includes(q));
+  document.getElementById('count-badge').textContent=fl.length+' ORANG';
+  if(!fl.length){L.innerHTML='<div class="empty-state">ANGGOTA TIDAK DITEMUKAN</div>';return;}
+  const f=mf();
+  fl.forEach(a=>{
+    const sU=SK[a.no].u[MT],sP=SK[a.no].p[MT];
+    const tU=a.urea[f],tP=a.npk[f];
+    const pU=tU>0?((tU-sU)/tU*100).toFixed(0):0;
+    const pP=tP>0?((tP-sP)/tP*100).toFixed(0):0;
+    const el=document.createElement('div');
+    el.className='acard';el.id='card-'+a.no;
+    el.innerHTML=`
+    <div class="acard-head" onclick="toggleCard(${a.no})">
+      <div class="ano">${a.no}</div>
+      <div class="ainfo">
+        <div class="anama">${a.nama}</div>
+        <div class="anik">${a.nik}</div>
+        <div class="alahan">📐 ${a.lahan} Ha · ${MT}</div>
+      </div>
+      <div class="asisa">
+        <div class="asisa-lbl">SISA</div>
+        <div class="asisa-num">
+          <span class="su">${sU>0?sU+'U':'<span class="sisa-habis">—</span>'}</span>
+          <span class="sp">${sP>0?sP+'P':'<span class="sisa-habis">—</span>'}</span>
+        </div>
+      </div>
+    </div>
+    <div class="detail-panel" id="dp-${a.no}">
+      <div class="detail-grid">
+        <div class="dbox dbox-u">
+          <div class="dbox-title">⬜ UREA</div>
+          <div class="drow"><span class="dl">Kuota</span><span class="dv">${tU} kg</span></div>
+          <div class="drow"><span class="dl">Sisa</span><span class="dv">${sU} kg</span></div>
+          <div class="drow"><span class="dl">Terpakai</span><span class="dv">${tU-sU} kg</span></div>
+          <div class="prog-bg"><div class="prog-u" style="width:${pU}%"></div></div>
+        </div>
+        <div class="dbox dbox-p">
+          <div class="dbox-title">🟥 NPK PHONSKA</div>
+          <div class="drow"><span class="dl">Kuota</span><span class="dv">${tP} kg</span></div>
+          <div class="drow"><span class="dl">Sisa</span><span class="dv">${sP} kg</span></div>
+          <div class="drow"><span class="dl">Terpakai</span><span class="dv">${tP-sP} kg</span></div>
+          <div class="prog-bg"><div class="prog-p" style="width:${pP}%"></div></div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="trx-title">✦ Transaksi Pengambilan ✦</div>
+      <div class="trx-grid">
+        <div class="trx-group">
+          <label>Urea (kg)</label>
+          <input class="trx-inp" type="number" id="iu-${a.no}" min="0" max="${sU}" placeholder="0" oninput="calcH(${a.no})" step="50">
+        </div>
+        <div class="trx-group">
+          <label>NPK Phonska (kg)</label>
+          <input class="trx-inp" type="number" id="ip-${a.no}" min="0" max="${sP}" placeholder="0" oninput="calcH(${a.no})" step="50">
+        </div>
+      </div>
+      <div class="harga-est" id="est-${a.no}">Masukkan jumlah untuk melihat harga</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:7px;">
+        <button class="btn-trx btn-u" onclick="bukaStruk(${a.no},'u')">🧾 Urea</button>
+        <button class="btn-trx btn-p" onclick="bukaStruk(${a.no},'p')">🧾 Phonska</button>
+      </div>
+      <button class="btn-trx btn-both" onclick="bukaStruk(${a.no},'b')" style="margin-top:5px;">✦ Transaksi Keduanya</button>
+    </div>`;
+    L.appendChild(el);
+  });
+}
+
+function toggleCard(no){
+  const c=document.getElementById('card-'+no);
+  const was=c.classList.contains('active');
+  document.querySelectorAll('.acard').forEach(x=>x.classList.remove('active'));
+  if(!was)c.classList.add('active');
+}
+
+function calcH(no){
+  const u=parseFloat(document.getElementById('iu-'+no).value)||0;
+  const p=parseFloat(document.getElementById('ip-'+no).value)||0;
+  const hU=Math.ceil(u/50)*HU,hP=Math.ceil(p/50)*HP;
+  const el=document.getElementById('est-'+no);
+  if(!u&&!p){el.textContent='Masukkan jumlah untuk melihat harga';return;}
+  let pts=[];
+  if(u>0)pts.push('Urea: Rp '+hU.toLocaleString('id'));
+  if(p>0)pts.push('Phonska: Rp '+hP.toLocaleString('id'));
+  if(u>0&&p>0)pts.push('Total: Rp '+(hU+hP).toLocaleString('id'));
+  el.textContent=pts.join(' · ');
+}
+
+function bukaStruk(no,jenis){
+  const a=DATA_RDKK.find(x=>x.no===no);
+  const iu=parseFloat(document.getElementById('iu-'+no).value)||0;
+  const ip=parseFloat(document.getElementById('ip-'+no).value)||0;
+  const sU=SK[no].u[MT],sP=SK[no].p[MT];
+  let aU=(jenis==='u'||jenis==='b')?iu:0;
+  let aP=(jenis==='p'||jenis==='b')?ip:0;
+  if((jenis==='u'||jenis==='b')&&aU<=0){showToast('⚠ Masukkan jumlah Urea');return;}
+  if((jenis==='u'||jenis==='b')&&aU>sU){showToast('❌ Melebihi sisa Urea! Sisa: '+sU+' kg');return;}
+  if((jenis==='p'||jenis==='b')&&aP<=0){showToast('⚠ Masukkan jumlah Phonska');return;}
+  if((jenis==='p'||jenis==='b')&&aP>sP){showToast('❌ Melebihi sisa Phonska! Sisa: '+sP+' kg');return;}
+  pending={no,aU,aP,a};
+  const hU=aU>0?Math.ceil(aU/50)*HU:0;
+  const hP=aP>0?Math.ceil(aP/50)*HP:0;
+  document.getElementById('struk-nama').textContent=a.nama;
+  document.getElementById('struk-musim').textContent=MT+' · '+new Date().toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric'});
+  const eu=document.getElementById('sd-urea'),ep=document.getElementById('sd-phoska');
+  if(aU>0){eu.style.display='block';document.getElementById('s-kg-u').textContent=aU+' kg ('+Math.ceil(aU/50)+' karung)';document.getElementById('s-sub-u').textContent='Rp '+hU.toLocaleString('id');}else eu.style.display='none';
+  if(aP>0){ep.style.display='block';document.getElementById('s-kg-p').textContent=aP+' kg ('+Math.ceil(aP/50)+' karung)';document.getElementById('s-sub-p').textContent='Rp '+hP.toLocaleString('id');}else ep.style.display='none';
+  document.getElementById('s-total').textContent='Rp '+(hU+hP).toLocaleString('id');
+  document.getElementById('strukOverlay').classList.add('show');
+}
+
+function batalStruk(){document.getElementById('strukOverlay').classList.remove('show');pending=null;}
+
+function konfirmasi(){
+  if(!pending)return;
+  const{no,aU,aP,a}=pending;
+  if(aU>0)SK[no].u[MT]-=aU;
+  if(aP>0)SK[no].p[MT]-=aP;
+  saveSK();
+  const hU=aU>0?Math.ceil(aU/50)*HU:0;
+  const hP=aP>0?Math.ceil(aP/50)*HP:0;
+  const total=hU+hP;
+  const now=new Date();
+  const tgl=now.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});
+  const jam=now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+  if(aU>0)riwayat.unshift({nama:a.nama,no,jenis:'UREA',jumlah:aU,musim:MT,tgl,jam});
+  if(aP>0)riwayat.unshift({nama:a.nama,no,jenis:'NPK PHONSKA',jumlah:aP,musim:MT,tgl,jam});
+  localStorage.setItem('rw_kts',JSON.stringify(riwayat));
+  transaksi.unshift({id:Date.now(),nama:a.nama,no,aU,aP,hU,hP,total,musim:MT,tgl,jam});
+  localStorage.setItem('trx_kts',JSON.stringify(transaksi));
+  document.getElementById('strukOverlay').classList.remove('show');
+  pending=null;
+  document.getElementById('iu-'+no).value='';
+  document.getElementById('ip-'+no).value='';
+  document.getElementById('est-'+no).textContent='Masukkan jumlah untuk melihat harga';
+  showToast('✅ '+a.nama+' · Rp '+total.toLocaleString('id')+' tercatat');
+  renderList();updateHeader();
+  setTimeout(()=>{const c=document.getElementById('card-'+no);if(c)c.classList.add('active');},120);
+}
+
+function renderKas(){
+  let tot=0,uang=0,pang=0,ukg=0,pkg=0;
+  transaksi.forEach(t=>{tot+=t.total;uang+=t.hU;pang+=t.hP;ukg+=t.aU;pkg+=t.aP;});
+  document.getElementById('kas-total').textContent='Rp '+tot.toLocaleString('id');
+  document.getElementById('kas-trx-count').textContent=transaksi.length+' transaksi';
+  document.getElementById('kas-trx-head').textContent=transaksi.length+' TRANSAKSI';
+  document.getElementById('kas-urea').textContent='Rp '+uang.toLocaleString('id');
+  document.getElementById('kas-urea-kg').textContent=ukg.toLocaleString('id')+' kg terjual';
+  document.getElementById('kas-phoska').textContent='Rp '+pang.toLocaleString('id');
+  document.getElementById('kas-phoska-kg').textContent=pkg.toLocaleString('id')+' kg terjual';
+  const el=document.getElementById('transaksiList');
+  if(!transaksi.length){el.innerHTML='<div class="empty-state">BELUM ADA TRANSAKSI</div>';return;}
+  el.innerHTML=transaksi.slice(0,100).map(t=>{
+    let det=[];if(t.aU>0)det.push('Urea '+t.aU+' kg');if(t.aP>0)det.push('Phonska '+t.aP+' kg');
+    return`<div class="trx-item">
+      <div style="flex:1;min-width:0">
+        <div class="ti-nama">${t.nama}</div>
+        <div class="ti-det">${det.join(' + ')} · ${t.musim}</div>
+        <div class="ti-time">${t.tgl} ${t.jam}</div>
+      </div>
+      <div>
+        <div class="ti-rp">Rp ${t.total.toLocaleString('id')}</div>
+        <div class="ti-jenis">${t.aU>0&&t.aP>0?'UREA+PHONSKA':t.aU>0?'UREA':'PHONSKA'}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function hapusKas(){if(!confirm('Hapus semua transaksi kas?'))return;transaksi=[];localStorage.setItem('trx_kts','[]');renderKas();showToast('🗑 Transaksi dihapus');}
+
+function openModal(){
+  const modal=document.getElementById('modalRiwayat');modal.classList.add('show');
+  const el=document.getElementById('riwayatList');
+  if(!riwayat.length){el.innerHTML='<div class="empty-state">BELUM ADA RIWAYAT</div>';return;}
+  el.innerHTML=riwayat.slice(0,60).map(r=>`
+    <div class="rw-item">
+      <div><div class="rw-nama">${r.nama}</div><div class="rw-det">${r.jumlah} kg · ${r.musim}</div><div class="rw-time">${r.tgl} ${r.jam}</div></div>
+      <div class="${r.jenis==='UREA'?'rw-u':'rw-p'}">${r.jenis}<br>${r.jumlah} kg</div>
+    </div>`).join('');
+}
+function closeModal(){document.getElementById('modalRiwayat').classList.remove('show');}
+function closeModalOut(e){if(e.target.id==='modalRiwayat')closeModal();}
+
+function resetAll(){
+  if(!confirm('⚠ Reset SEMUA data?'))return;
+  initSK();saveSK();
+  riwayat=[];localStorage.setItem('rw_kts','[]');
+  transaksi=[];localStorage.setItem('trx_kts','[]');
+  renderList();updateHeader();showToast('🔄 Semua data direset');
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+renderList();
+updateHeader();
+</script>
+</body>
+</html>
